@@ -1,0 +1,10 @@
+# Mark binary files to prevent line-ending corruption during Git commits/transfers
+*.jar binary
+*.png binary
+*.so binary
+*.keystore binary
+*.apk binary
+*.aab binary
+
+# Ensure gradlew always uses LF line endings
+gradlew text eol=lf
