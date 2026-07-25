@@ -1,0 +1,6 @@
+{
+  "name": "عاكس",
+  "description": "Converts Arabic text into shaped and reordered Unicode presentation forms for non-Arabic-aware apps like Photoshop, Premiere, CapCut, and games, with a persistent floating bubble overlay.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
