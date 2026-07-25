@@ -1,0 +1,7 @@
+# Prevent Git LFS tracking and line-ending corruption for Jar files
+*.jar -filter -diff -merge binary
+gradle/wrapper/gradle-wrapper.jar -filter -diff -merge binary
+
+# Ensure gradlew executable maintains LF line endings
+gradlew text eol=lf
+gradlew.bat text eol=crlf
