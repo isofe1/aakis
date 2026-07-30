@@ -1,8 +1,12 @@
 package com.example.ui.screens
 
+import android.app.StatusBarManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Icon
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -29,6 +33,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
+import com.example.service.BubbleTileService
 import com.example.ui.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -402,6 +408,96 @@ fun FloatingBubbleScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = 18.sp
                 )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Quick Settings Tile Feature Card (for Minecraft & Gaming)
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFF064E3B)
+            )
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(
+                        modifier = Modifier
+                            .size(38.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFF10B981)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            Icons.Default.SportsEsports,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.size(22.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Column {
+                        Text(
+                            text = "اختصار لوحة التحكم السريعة (Quick Settings)",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Text(
+                            text = "لتشغيل الفقاعة داخل ماينكرافت دون الخروج من السيرفر",
+                            fontSize = 11.sp,
+                            color = Color(0xFFA7F3D0)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text(
+                    text = "تمت إضافة 'زر اختصار' جديد يظهر في لوحة الإشعارات العلوية (بجانب زر الواي فاي والبلوتوث والمصباح):\n\n" +
+                            "🎮 كيف تستخدمه داخل لعبة ماينكرافت؟\n" +
+                            "1. اسحب شريط الإشعارات من أعلى الشاشة إلى الأسفل.\n" +
+                            "2. اضغط على 'تعديل الأزرار' ✏️ أو القلم (في أجهزة شاومي، سامسونج، بكسل وغيرها).\n" +
+                            "3. اسحب زر 'فقاعة عاكس' وضعه في قائمتك المفضلة.\n" +
+                            "4. الآن في أي وقت أثناء اللعب، اسحب الشريط واضغط الزر لفتح أو إغلاق الفقاعة فوراً وبدون الخروج من اللعبة!",
+                    fontSize = 12.sp,
+                    color = Color.White.copy(alpha = 0.95f),
+                    lineHeight = 18.sp
+                )
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    Spacer(modifier = Modifier.height(14.dp))
+                    Button(
+                        onClick = {
+                            try {
+                                val statusBarManager = context.getSystemService(StatusBarManager::class.java)
+                                val componentName = ComponentName(context, BubbleTileService::class.java)
+                                val icon = Icon.createWithResource(context, R.mipmap.ic_launcher)
+                                statusBarManager?.requestAddTileService(
+                                    componentName,
+                                    "فقاعة عاكس",
+                                    icon,
+                                    context.mainExecutor
+                                ) { _ -> }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF10B981)
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("add_qs_tile_button")
+                    ) {
+                        Icon(Icons.Default.AddTask, contentDescription = null, modifier = Modifier.size(18.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("إضافة زر الاختصار تلقائياً للشريط العلوي", fontWeight = FontWeight.Bold)
+                    }
+                }
             }
         }
     }

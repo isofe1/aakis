@@ -25,7 +25,6 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ContentCopy
@@ -218,7 +217,13 @@ class FloatingBubbleService : Service(), LifecycleOwner, SavedStateRegistryOwner
                                     change.consume()
                                     params.x += dragAmount.x.toInt()
                                     params.y += dragAmount.y.toInt()
-                                    windowManager.updateViewLayout(bubbleComposeView, params)
+                                    if (bubbleComposeView != null && bubbleComposeView?.isAttachedToWindow == true) {
+                                        try {
+                                            windowManager.updateViewLayout(bubbleComposeView, params)
+                                        } catch (e: Exception) {
+                                            e.printStackTrace()
+                                        }
+                                    }
 
                                     val screenHeight = resources.displayMetrics.heightPixels
                                     val isNearBottom = params.y > screenHeight * 0.72f
